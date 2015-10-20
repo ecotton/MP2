@@ -7,10 +7,8 @@
  * alloc.h. You can add any data structures you like to this file.
  */
 
-//typedef struct m_header *Header; 
-
 struct m_header {
- 	size_t size; 
+ 	unsigned int size; 
  	struct m_header *next; 
  	unsigned int is_free;
 };
@@ -18,15 +16,11 @@ struct m_header {
 #define HEADER_SIZE (int)(sizeof(struct m_header))
 
 int alloc_init(void * memarea, int size) {
-	//printf("HEADER_SIZE:%d\n", HEADER_SIZE); 
 	//fflush(stdout); 
 	struct m_header *mh = memarea;
-	//printf("is this where you're crashing?"); 
 	mh->size = size;
-	mh->next = (void*)(0); 
+	//mh->next = NULL; 
 	mh->is_free = 1;
-
-	//printf("made it through init"); 
 	return 0;
 }
 
@@ -57,8 +51,6 @@ void * alloc_get(void * memarea, int size) {
 	current->size = size;
 	current->next = end_block;
 	current->is_free = 0; 
-
-	//print_memory(memarea); 
 
 	return (void *) (current + HEADER_SIZE);
 }
